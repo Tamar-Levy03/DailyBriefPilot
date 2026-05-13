@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from app.models.briefing import BriefingResponse
 
 app = FastAPI(title="DailyBriefPilot API", version="1.0")
 
@@ -10,4 +11,4 @@ def health_check():
 @app.post("/generate-brief")
 def generate_brief():
     # Placeholder for the actual implementation of the brief generation logic
-    return {"brief": "Taily briefing is being prepared..."}
+    return BriefingResponse(message="Your daily briefing is being prepared...")
