@@ -14,4 +14,5 @@ async def generate_brief():
     # Placeholder for the actual implementation of the brief generation logic
     briefing_service = BriefingService()
     message = await briefing_service.generate_briefing()
+    print(message)
     return BriefingResponse(message=message)
