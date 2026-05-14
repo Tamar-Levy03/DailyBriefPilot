@@ -10,8 +10,8 @@ def health_check():
     return {"status": "working"}
 
 @app.post("/generate-brief")
-def generate_brief():
+async def generate_brief():
     # Placeholder for the actual implementation of the brief generation logic
     briefing_service = BriefingService()
-    message = briefing_service.generate_briefing()
+    message = await briefing_service.generate_briefing()
     return BriefingResponse(message=message)
