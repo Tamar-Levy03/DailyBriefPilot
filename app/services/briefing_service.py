@@ -1,6 +1,7 @@
 from app.clients.weather_client import WeatherClient
 from app.clients.stocks_client import StocksClient
 from app.clients.news_client import NewsClient
+import asyncio
 
 class BriefingService:
 
@@ -10,23 +11,25 @@ class BriefingService:
         self.news_client = NewsClient()
 
     async def generate_briefing(self) -> str:
+        weather, stocks, news = await asyncio.gather(
+            self.weather_client.get_weather(),
+            self.stocks_client.get_stock_data("AAPL"),
+            self.news_client.get_news()
+        )
         #weather briefing
-        weather = await self.weather_client.get_weather()
         location = weather["location"]["name"]
         temperature = weather["current"]["temp_c"]
         condition = weather["current"]["condition"]["text"]
-        briefing = f"the weather in {location} is currently {condition} with a temperature of {temperature} Celsius\n"
+        weather_briefing = f"the weather in {location} is currently {condition} with a temperature of {temperature} Celsius."
         #stocks briefing
-        stocks = await self.stocks_client.get_stock_data("AAPL")
         stock_price = stocks["c"]
         change_percent = stocks["dp"]
-        briefing += f"The current price of AAPL is ${stock_price} with a change of {change_percent}%."
+        stocks_briefing = f"The current price of AAPL is ${stock_price} with a change of {change_percent}%."
         #news briefing
-        news = await self.news_client.get_news()
         articles = news["articles"]
         headlines = [article["title"] for article in articles]
-        briefing += "\nToday's top news headlines are:\n" + "\n".join(headlines)
-
+        news_briefing = "\nToday's top news headlines are:\n" + "\n".join(headlines)
+        briefing = "\n".join([weather_briefing, stocks_briefing, news_briefing])
         return briefing
     
     
