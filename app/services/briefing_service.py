@@ -8,6 +8,8 @@ class BriefingService:
 
     async def generate_briefing(self) -> str:
         weather = await self.weather_client.get_weather()
-        temperature = weather["current"]["temperature_2m"]
-        briefing = f"the temperature in zichron yaakov is currently {temperature} Celsius"
+        location = weather["location"]["name"]
+        temperature = weather["current"]["temp_c"]
+        condition = weather["current"]["condition"]["text"]
+        briefing = f"the weather in {location} is currently {condition} with a temperature of {temperature} Celsius"
         return briefing

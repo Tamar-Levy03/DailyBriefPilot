@@ -1,13 +1,18 @@
 import httpx
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 class WeatherClient:
-    URL ="https://api.open-meteo.com/v1/forecast"
-    
+    URL ="http://api.weatherapi.com/v1/current.json"
+    API_KEY = os.getenv("WEATHER_API_KEY")
+
     async def get_weather(self,) -> dict:
         params = {
-            "latitude": 32.573905,
-            "longitude": 34.951977,    #Zichron yaakov coordinates for testing
-            "current": "temperature_2m"
+            "key": self.API_KEY,
+            "q": "Zikhron Ya'akov, Israel", #Zichron yaakov for testing, can be changed to any location
+            "aqi": "no"
         }
         async with httpx.AsyncClient() as client:
             response = await client.get(self.URL, params=params)
