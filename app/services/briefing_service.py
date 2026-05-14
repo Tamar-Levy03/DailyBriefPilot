@@ -17,18 +17,11 @@ class BriefingService:
             self.news_client.get_news()
         )
         #weather briefing
-        location = weather["location"]["name"]
-        temperature = weather["current"]["temp_c"]
-        condition = weather["current"]["condition"]["text"]
-        weather_briefing = f"the weather in {location} is currently {condition} with a temperature of {temperature} Celsius."
+        weather_briefing = f"the weather in {weather.city} is currently {weather.condition} with a temperature of {weather.temperature} Celsius."
         #stocks briefing
-        stock_price = stocks["c"]
-        change_percent = stocks["dp"]
-        stocks_briefing = f"The current price of AAPL is ${stock_price} with a change of {change_percent}%."
+        stocks_briefing = f"The current price of AAPL is ${stocks.current_price} with a change of {stocks.change_percent}%."
         #news briefing
-        articles = news["articles"]
-        headlines = [article["title"] for article in articles]
-        news_briefing = "\nToday's top news headlines are:\n" + "\n".join(headlines)
+        news_briefing = "\nToday's top news headlines are:\n" + "\n".join([article.title for article in news])
         briefing = "\n".join([weather_briefing, stocks_briefing, news_briefing])
         return briefing
     
